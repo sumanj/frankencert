@@ -1,0 +1,44 @@
+Contains 
+
+franken_core.py
+franken_generate.py 
+franken_util.py
+franken_conf_parse.py
+franken.conf   Sample configuration file
+create_new_ca.sh Script for creating new CA cert using OpenSSL utils
+rootCA.key     The private key of a sample root CA 
+rootCA.pem     The self-signed certificate of a sample root CA
+
+1. FrankenCert needs a modified verison of PyOpenSSL. We have included 
+the source for our modified version of PyOpenSSL in pyOpenSSL-0.13 
+directory. First, uninstall any other version of PyOpenSSL that you 
+may have installed on your computer. Go to the directory and build/install 
+PyOpenSSL by issuing - 
+
+sudo python setup.py install 
+
+2. In order to actually generate frankencerts you need a number of seed 
+certs. Any SSL cert in PEM fromat can act as seed certs and you do not 
+need access to the corresponding private keys to use them with frankencerts.
+
+To generate frankencerts, use the franken_generate.py script as follows -
+
+python franken_generate.py [path_to_seed_certs] [path_to_ca_cert] [path_to_output_certs] [count] <franken_config_file>
+
+This will generate [count] number of Frankencerts inside the [path_to_output_certs} directory. They will be named as "frankencert-<number>.pem".
+
+For the [path_to_ca_cert] argument you can use our included CA cert e.g. rootCA.pem or use your own. Make sure to add the CA cert as a trusted CA while testing your clients with frankencert. If you are useing your own CA cert, please ensure that the cert file also contains the corresponding private key.
+
+The generated frankencerts will contain their corresponding private keys inside them. You should use them with the SSL server we provided - "
+
+https://scans.io/study/sonar.ssl.
+
+ADVANCED
+--------
+
+Configs
+ 
+
+ 
+
+
