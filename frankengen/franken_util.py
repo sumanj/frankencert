@@ -2,12 +2,14 @@
 import os
 from OpenSSL import crypto
 import subprocess
+import sys
 
 #write out all the certs
-def dump_certs(certs, prefix, path):
+def dump_certs(certs, prefix, path, name_begin=0):
     for i,cert in enumerate(certs):
         key,certs = cert
-        with open(os.path.join(path, "%s-%d.pem" % (prefix, i)), "w") as f:
+        with open(os.path.join(path, "%s-%d.pem" % (prefix, name_begin+i)), \
+                   "w") as f:
             f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key))
             for cert in certs:
                 f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
@@ -16,12 +18,26 @@ def dump_certs(certs, prefix, path):
 #load all certs from a directory
 def load_dir(path):      
     certs = []        
-    files = os.listdir(path)                                               
+    files = os.listdir(path)
+    nfiles =  len(files)                                               
     files = map(lambda f : os.path.join(path, f), files)
+    step = nfiles/10
+    count  = 0
+    sys.stdout.write("Loading seed certificates") 
     for infile in files:
+	count = (count+1) % step
+	if (count==0):
+            sys.stdout.write(".") 
+	    sys.stdout.flush()
         with open(infile) as f:
             buf = f.read()
-            certs.append(crypto.load_certificate(crypto.FILETYPE_PEM, buf))
+	    try:
+                certs.append(crypto.load_certificate(crypto.FILETYPE_PEM, buf))
+	    except:
+                print "Skipping: "+infile
+    sys.stdout.write("\n")
+    sys.stdout.flush()
+ 
     return certs
 
 #recycle an existing certfile containing arbitrarily long cert chains 

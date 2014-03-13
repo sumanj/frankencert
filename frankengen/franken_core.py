@@ -1,6 +1,7 @@
 from OpenSSL import crypto
 import random
 import collections
+import sys
 
 def get_extension_dict(certs):
     d = collections.defaultdict(dict)
@@ -91,14 +92,25 @@ def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
         extensions = get_extension_dict(certificates)
 
     max_extensions = min(max_extensions, len(extensions.keys()))
-    
+  
+    #generate the key pairs once and reuse them for faster 
+    #frankencert generation  
     pkeys = []
     for i in range(max_depth):
         pkey = crypto.PKey()
         pkey.generate_key(crypto.TYPE_RSA, public_key_len)
 	pkeys.append(pkey)	
 
+    progressbar_size = 10
+    if (count>progressbar_size):
+        step = count/progressbar_size
+    else:
+        step = 1 
     for i in range(count):
+	if (i%step==0):
+    	    sys.stdout.write(".")     
+    	    sys.stdout.flush()     
+            
         chain = []
         signing_key = ca_key
         issuer = ca_cert.get_subject()
@@ -115,5 +127,5 @@ def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
             issuer = cert.get_subject()
             chain.append(cert)
         certs.append((key,list(reversed(chain))))
-
+    
     return certs
