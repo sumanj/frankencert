@@ -47,36 +47,36 @@ testing correctness of the certificate validation code.
 
    The arguments are explained below.
 
-   - `seed_certs_dir`: FrankenCert generator needs a set of seed certificates. 
-      Any SSL cert in PEM fromat can act as a seed cert. `seed_certs_dir`
-      can be any directory containing the seed certs stored as PEM files.
+    - `seed_certs_dir`: FrankenCert generator needs a set of seed certificates. 
+       Any SSL cert in PEM fromat can act as a seed cert. `seed_certs_dir`
+       can be any directory containing the seed certs stored as PEM files.
    
-      You can either use tools like ZMap(https://zmap.io/) to collect SSL seed 
-      certificates or use some of the SSL certs available from https://www.eff.org/observatory.
-      You do not need access to the corresponding private keys to use the certs 
-      as seeds. 
+       You can either use tools like ZMap(https://zmap.io/) to collect SSL seed 
+       certificates or use some of the SSL certs available from https://www.eff.org/observatory.
+       You do not need access to the corresponding private keys to use the certs 
+       as seeds. 
    
-      For your convenience, we have included a tarball containing around 1000 seed 
-      certificates in `utils/sample_seed_certs.tar.gz`. 
+       For your convenience, we have included a tarball containing around 1000 seed 
+       certificates in `utils/sample_seed_certs.tar.gz`. 
 
-   - `ca_cert`: You will also need to create a self-signed CA certificate to sign 
-      the frankencerts. You can either use the included sample CA certificate 
-      `utils/rootCA_key_cert.pem` or use the `utils/create_new_ca.sh` script to 
-      create your own root CA. For any root CA that you use for frankencert 
-      generation, make sure that your SSL certificate validation code treats 
-      it as a trusted certificate.
+    - `ca_cert`: You will also need to create a self-signed CA certificate to sign 
+       the frankencerts. You can either use the included sample CA certificate 
+       `utils/rootCA_key_cert.pem` or use the `utils/create_new_ca.sh` script to 
+       create your own root CA. For any root CA that you use for frankencert 
+       generation, make sure that your SSL certificate validation code treats 
+       it as a trusted certificate.
 
-   - `output_dir`: It will contain the generated frankencerts. The frankencerts 
-      will be named as `frankencert-<number>.pem`. 
+    - `output_dir`: It will contain the generated frankencerts. The frankencerts 
+       will be named as `frankencert-<number>.pem`. 
 
-   - `count`: Number of frankencerts to be generated. 
+    - `count`: Number of frankencerts to be generated. 
 
-   - `config_file`: An optional argument to tune the frankencert generation process.
+    - `config_file`: An optional argument to tune the frankencert generation process.
       Take a look at the `utils/sample_franken.conf` for a sample config file.
 
-4. If you want to test your SSL/TLS client with the generated frankencerts, you 
-   should use the `utils/test_ssl_server.py` script to set up a SSL server that 
-   can send the generated frankencerts as part of the SSL handshake. 
+4. To test your SSL/TLS client with the generated frankencerts, you should use 
+   the `utils/test_ssl_server.py` script to set up a SSL server that can send 
+   the generated frankencerts as part of the SSL handshake. 
 
 
 ### Project structure
