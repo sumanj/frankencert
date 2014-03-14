@@ -1,8 +1,8 @@
-FrankenCert - Adversarial Testing of Certificate Validation in SSL/TLS Implementations
+Frankencert - Adversarial Testing of Certificate Validation in SSL/TLS Implementations
 =======================================================================================
 
-###What are FrankenCerts?
-FrankenCerts are specifically crafted SSL certificates for testing certificate 
+###What are frankencerts?
+Frankencerts are specifically crafted SSL certificates for testing certificate 
 validation code in SSL/TLS implementations. The technique is described in 
 detail in the IEEE Symposium on Security and Privacy (Oakland) 2014 paper -
 *Using Frankencerts for Automated Adversarial Testing of Certificate Validation 
@@ -10,33 +10,34 @@ in SSL/TLS Implementations* by Chad Brubaker, Suman Jana, Baishakhi Ray,
 Sarfraz Khurshid, and Vitaly Shmatikov. 
 
 
-###Why is FrankenCert useful?
-FrankenCert is essentially a smart fuzzer for SSL/TLS certificate validation
-code. If you are a developer who is implementing any sort of SSL/TLS certificate 
-validation code (either as part of a SSL/TLS library or an application), you 
-can use the frankencert generator to auto-generate different test certificates 
-involving complex corner cases. 
+###Why is frankencert generator useful?
+FrankenCert generator is essentially a smart fuzzer for testing SSL/TLS 
+certificate validation code. If you are a developer who is implementing 
+any sort of SSL/TLS certificate validation code (either as part of a SSL/TLS 
+library or an application), you can use the frankencert generator to 
+auto-generate different test certificates involving complex corner cases. 
 
-We have successfully used FrankenCerts to find serious vulnerabilities 
+We have successfully used frankencerts to find serious vulnerabilities 
 in GnuTLS, PolarSSL, CyaSSL, and MatrixSSL as described in the Oakland 
-2014 paper. We also found several how SSL/TLS implementations report 
-errors back to the user. For example, when presented with an expired,
-self-signed certificate, NSS, Chrome on Linux, and Safari reports that 
-the certificate has expired but not that the issuer is invalid.
+2014 paper. We also found several discrepancies between how different 
+SSL/TLS implementations report errors back to the user. For example, 
+when presented with an expired, self-signed certificate, NSS, Chrome on 
+Linux, and Safari reports that the certificate has expired but not that 
+the issuer is invalid.
 
 
-###How does FrankenCert work?
-The basic idea of FrankenCert is to take a bunch of certificates as seeds 
-and use random mutations on different fields and extensions to creat new 
-test certificates(frankencerts). Thus, FrankenCertS can help in systematically 
+###How does frankencert work?
+The basic idea of frankencert is to take a bunch of certificates as seeds 
+and use random mutations on different fields and extensions to create new 
+test certificates(frankencerts). Thus, frankencerts can help in systematically 
 testing correctness of the certificate validation code.
 
 ###Installation & Usage
-- Install OpenSSL libraries and utilities  if you already haven not.
+- Install OpenSSL libraries and utilities if you don't have them already.
 
-- The frankencert generator needs a modified verison of PyOpenSSL. 
+- The frankencert generator needs a modified version of PyOpenSSL. 
    We have included the source for our modified version of PyOpenSSL. 
-   You will need to install it in order to use the frankencert geneartor. 
+   You will need to install it in order to use the frankencert generator. 
    First, uninstall any other version of PyOpenSSL that you may have 
    installed on your computer. Go to the `pyOpenSSL-0.13` directory and 
    build/install PyOpenSSL by issuing `sudo python setup.py install`.
@@ -47,7 +48,7 @@ testing correctness of the certificate validation code.
 
    The arguments are explained below.
 
-    - `seed_certs_dir`: FrankenCert generator needs a set of seed certificates. 
+    - `seed_certs_dir`: Frankencert generator needs a set of seed certificates. 
        Any SSL cert in PEM fromat can act as a seed cert. `seed_certs_dir`
        can be any directory containing the seed certs stored as PEM files.
    
@@ -88,11 +89,11 @@ testing correctness of the certificate validation code.
     - `rootCA_key_cert.pem`: private key and self-signed cert of a sample CA
       that can be used for signing frankencerts.
     - `create_new_ca.sh`: a script for creating new CA with a self-signed cert.
-      It creates the output cert and private key in rootCA.pem (requires OpenSSL). 
+      It creates the output cert and private key in `rootCA.pem` (requires OpenSSL). 
     - `test_ssl_server.py`: a SSL/TLS sample server for serving frankencerts 
       to SSL clients
     - `sample_seed_certs.tar.gz`: Some sample certs that may be used as seeds for 
       frankencert generation. 
     - `sample_franken.conf`: A sample config file that can be used to tune 
-      different parameters of the frankencer generation process. 
+      different parameters of the frankencert generation process. 
 
