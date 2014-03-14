@@ -32,16 +32,16 @@ test certificates(frankencerts). Thus, FrankenCertS can help in systematically
 testing correctness of the certificate validation code.
 
 ###Installation & Usage
-1. Install OpenSSL libraries and utilities  if you already haven not.
+- Install OpenSSL libraries and utilities  if you already haven not.
 
-2. The frankencert generator needs a modified verison of PyOpenSSL. 
+- The frankencert generator needs a modified verison of PyOpenSSL. 
    We have included the source for our modified version of PyOpenSSL. 
    You will need to install it in order to use the frankencert geneartor. 
    First, uninstall any other version of PyOpenSSL that you may have 
    installed on your computer. Go to the `pyOpenSSL-0.13` directory and 
    build/install PyOpenSSL by issuing `sudo python setup.py install`.
 
-3. Once you have the patched pyOpenSSL set up, to generate frankencerts, 
+- Once you have the patched pyOpenSSL set up, to generate frankencerts, 
    use the `franken_generate.py` script: `python franken_generate.py 
    seed_certs_dir ca_cert output_dir count [config_file]`.
 
@@ -74,7 +74,7 @@ testing correctness of the certificate validation code.
     - `config_file`: An optional argument to tune the frankencert generation process.
       Take a look at the `utils/sample_franken.conf` for a sample config file.
 
-4. To test your SSL/TLS client with the generated frankencerts, you should use 
+- To test your SSL/TLS client with the generated frankencerts, you should use 
    the `utils/test_ssl_server.py` script to set up a SSL server that can send 
    the generated frankencerts as part of the SSL handshake. 
 
