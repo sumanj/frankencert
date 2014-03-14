@@ -5,8 +5,8 @@ FrankenCert - Adversarial Testing of Certificate Validation in SSL/TLS Implement
 FrankenCerts are specifically crafted SSL certificates for testing certificate 
 validation code in SSL/TLS implementations. The technique is described in 
 detail in the IEEE Symposium on Security and Privacy (Oakland) 2014 paper -
-"Using Frankencerts for Automated Adversarial Testing of Certificate Validation 
-in SSL/TLS Implementations" by Chad Brubaker, Suman Jana, Baishakhi Ray, 
+*Using Frankencerts for Automated Adversarial Testing of Certificate Validation 
+in SSL/TLS Implementations* by Chad Brubaker, Suman Jana, Baishakhi Ray, 
 Sarfraz Khurshid, and Vitaly Shmatikov. 
 
 
@@ -39,24 +39,20 @@ testing correctness of the certificate validation code.
    You will need to install it in order to use the frankencert geneartor. 
    First, uninstall any other version of PyOpenSSL that you may have 
    installed on your computer. Go to the `pyOpenSSL-0.13` directory and 
-   build/install PyOpenSSL by issuing the following command - 
-   '''
-   cd pyOpenSSL-0.13
-   sudo python setup.py install 
-   '''
+   build/install PyOpenSSL by issuing `sudo python setup.py install`.
 
 3. Once you have the patched pyOpenSSL set up, to generate frankencerts, 
    use the `franken_generate.py` script: `python franken_generate.py 
-   seed_certs_dir ca_cert output_dir count [config_file]`
+   seed_certs_dir ca_cert output_dir count [config_file]`.
 
-  The arguments are explained below.
+   The arguments are explained below.
 
    - `seed_certs_dir`: FrankenCert generator needs a set of seed certificates. 
       Any SSL cert in PEM fromat can act as a seed cert. `seed_certs_dir`
       can be any directory containing the seed certs stored as PEM files.
    
       You can either use tools like ZMap(https://zmap.io/) to collect SSL seed 
-      certificates or use some of the SSL certs available from https://www.eff.org/observatory.  
+      certificates or use some of the SSL certs available from https://www.eff.org/observatory.
       You do not need access to the corresponding private keys to use the certs 
       as seeds. 
    
@@ -68,7 +64,7 @@ testing correctness of the certificate validation code.
       `utils/rootCA_key_cert.pem` or use the `utils/create_new_ca.sh` script to 
       create your own root CA. For any root CA that you use for frankencert 
       generation, make sure that your SSL certificate validation code treats 
-      it as a trusted certificate.    
+      it as a trusted certificate.
 
    - `output_dir`: It will contain the generated frankencerts. The frankencerts 
       will be named as `frankencert-<number>.pem`. 
@@ -79,13 +75,13 @@ testing correctness of the certificate validation code.
       Take a look at the `utils/sample_franken.conf` for a sample config file.
 
 4. If you want to test your SSL/TLS client with the generated frankencerts, you 
-should use the `utils/test_ssl_server.py` script to set up a SSL server that 
-can send the generated frankencerts as part of the SSL handshake.     
+   should use the `utils/test_ssl_server.py` script to set up a SSL server that 
+   can send the generated frankencerts as part of the SSL handshake. 
 
 
 ### Project structure
  - The `frankengen` directory contains the frankencert generator code
- - Our patched version of pyOpenSSL is inside `pyOpenSSL-0.13` directory.
+ - Our patched version of pyOpenSSL is inside `pyOpenSSL-0.13` directory
  - Several useful tools are included in `utils`
     - `cert_print.py`: a tool for printing frankencerts. It requires OpenSSL
       to be installed and present in the path.
