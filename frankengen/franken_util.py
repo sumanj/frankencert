@@ -21,7 +21,7 @@ def load_dir(path):
     files = os.listdir(path)
     nfiles =  len(files)                                               
     files = map(lambda f : os.path.join(path, f), files)
-    step = nfiles/10
+    step = max(1,nfiles/10)
     count  = 0
     sys.stdout.write("Loading seed certificates") 
     for infile in files:
