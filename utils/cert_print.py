@@ -15,10 +15,10 @@ def print_cert(inpath):
             index = buf.find(pattern, index)
             if (index==-1):
                 break
-                p = subprocess.Popen(["openssl", "x509", "-text"], \
-                                stdout=subprocess.PIPE, stdin=subprocess.PIPE,\
-                                stderr=subprocess.STDOUT)
-                output += p.communicate(input=buf[index:])[0]
+            p = subprocess.Popen(["openssl", "x509", "-text"], \
+                            stdout=subprocess.PIPE, stdin=subprocess.PIPE,\
+                            stderr=subprocess.STDOUT)
+            output += p.communicate(input=buf[index:])[0]
             index = index + len(pattern)
             i += 1
     print output 
