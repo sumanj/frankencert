@@ -25,7 +25,7 @@ def get_extensions(cert):
 def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
                   extensions, flip_probability=0.25, \
                   ext_mod_probability=0.0, invalid_ts_probability = 0.0, \
-                  hash_for_sign="sha1"):
+                  hash_for_sign="sha1", randomize_serial=False):
     cert = crypto.X509()
    
 
@@ -34,9 +34,11 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     cert.set_notAfter(pick.get_notAfter())
     pick = random.choice(certificates)
     cert.set_notBefore(pick.get_notBefore())
-    pick = random.choice(certificates)
-    cert.set_serial_number(pick.get_serial_number())
-    #cert.set_serial_number(random.randint(1,2**128))
+    if randomize_serial:
+        cert.set_serial_number(random.randint(2**128,2**159))
+    else:
+        pick = random.choice(certificates)
+        cert.set_serial_number(pick.get_serial_number())
     pick = random.choice(certificates)
     cert.set_subject(pick.get_subject())
     if not issuer is None:
@@ -123,7 +125,7 @@ def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
             key, cert = generate_cert(certificates, pkeys[j], signing_key, issuer, \
                          max_extensions, extensions, fconfig["flip_critical_prob"], \
                           fconfig["ext_mod_prob"], fconfig["invalid_ts_prob"], \
-                        fconfig["hash_for_sign"])
+                        fconfig["hash_for_sign"], fconfig["randomize_serial"])
             signing_key = key
             issuer = cert.get_subject()
             chain.append(cert)

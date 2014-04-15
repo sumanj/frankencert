@@ -1,5 +1,4 @@
 import ConfigParser
-
 def parse_config(configfile):
     fconfig = {}
 
@@ -10,12 +9,14 @@ def parse_config(configfile):
                                 'self_signed_prob': '0.25', \
                                 'invalid_ts_prob': '0.0', \
                                 'public_key_len': '1024', \
-                                'hash_for_sign': 'sha1' \
+                                'hash_for_sign': 'sha1', \
+                                'randomize_serial': 'True', \
                                             })
     if (configfile!=""):
         parser.read(configfile)
     
     fconfig = parser.defaults() 
+    boolean_trues = ['true', 'yes', 'y', '1']
 
     fconfig["max_extensions"] = int(fconfig["max_extensions"])
     fconfig["max_depth"] = int(fconfig["max_depth"])
@@ -24,5 +25,6 @@ def parse_config(configfile):
     fconfig["self_signed_prob"] = float(fconfig["self_signed_prob"])
     fconfig["invalid_ts_prob"] = float(fconfig["invalid_ts_prob"])
     fconfig["public_key_len"] = int(fconfig["public_key_len"])
+    fconfig["randomize_serial"] = fconfig["randomize_serial"].lower() in boolean_trues
     
     return fconfig
