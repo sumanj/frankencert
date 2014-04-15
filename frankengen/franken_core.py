@@ -49,11 +49,11 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
         if random.random() < 0.5:
             notvalidyet = b(datetime.now() + timedelta(days=1).\
                                 strftime("%Y%m%d%H%M%SZ"))
-                cert.set_notBefore(notvalidyet)
+            cert.set_notBefore(notvalidyet)
         else:
             expired = b(datetime.now() - timedelta(days=1).\
                                 strftime("%Y%m%d%H%M%SZ"))
-                cert.set_notBefore(expired)
+            cert.set_notBefore(expired)
                 
         
     # handle the extensions
