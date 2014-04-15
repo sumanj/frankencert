@@ -25,15 +25,15 @@ def load_dir(path):
     count  = 0
     sys.stdout.write("Loading seed certificates") 
     for infile in files:
-	count = (count+1) % step
-	if (count==0):
+        count = (count+1) % step
+        if (count==0):
             sys.stdout.write(".") 
-	    sys.stdout.flush()
+            sys.stdout.flush()
         with open(infile) as f:
             buf = f.read()
-	    try:
+            try:
                 certs.append(crypto.load_certificate(crypto.FILETYPE_PEM, buf))
-	    except:
+            except:
                 print "Skipping: "+infile
     sys.stdout.write("\n")
     sys.stdout.flush()
@@ -45,23 +45,23 @@ def load_dir(path):
 def recycle_cert(inpath, outpath, cafile, fix_timestamps):
     incerts = []
     with open(inpath) as f:
-	buf = f.read()
+        buf = f.read()
         pattern = "-----BEGIN CERTIFICATE-----"
         index  = 0
-	while True:
+        while True:
             index = buf.find(pattern, index)
-	    if (index==-1):
+            if (index==-1):
                 break
-	    cert = crypto.load_certificate(crypto.FILETYPE_PEM, buf[index:])
+            cert = crypto.load_certificate(crypto.FILETYPE_PEM, buf[index:])
             index = index + len(pattern)
             incerts.append(cert)
     with open(cafile) as f:
-	buf = f.read()
-	cacert = crypto.load_certificate(crypto.FILETYPE_PEM, buf)
+        buf = f.read()
+        cacert = crypto.load_certificate(crypto.FILETYPE_PEM, buf)
     
     with open(cafile) as f:
-	buf = f.read()
-	cakey = crypto.load_privatekey(crypto.FILETYPE_PEM, buf)
+        buf = f.read()
+        cakey = crypto.load_privatekey(crypto.FILETYPE_PEM, buf)
     
     print len(incerts)
    
@@ -69,16 +69,16 @@ def recycle_cert(inpath, outpath, cafile, fix_timestamps):
     for i in range(len(incerts)):
         pkey = crypto.PKey()
         pkey.generate_key(crypto.TYPE_RSA, 1024)
-	pkeys.append(pkey)
+        pkeys.append(pkey)
     
     for i in range(len(incerts)):
         incerts[i].set_pubkey(pkeys[i])
         if (fix_timestamps):
-	    now = b(datetime.now().strftime("%Y%m%d%H%M%SZ"))
-	    expire  = b((datetime.now() + timedelta(days=100))\
-		   .strftime("%Y%m%d%H%M%SZ"))
-	    incerts[i].set_notBefore(now)
-	    incerts[i].set_notAfter(expire)
+            now = b(datetime.now().strftime("%Y%m%d%H%M%SZ"))
+            expire  = b((datetime.now() + timedelta(days=100))\
+                   .strftime("%Y%m%d%H%M%SZ"))
+            incerts[i].set_notBefore(now)
+            incerts[i].set_notAfter(expire)
    
         if (i==len(incerts)-1): 
             incerts[i].set_issuer(cacert.get_subject())
@@ -89,7 +89,7 @@ def recycle_cert(inpath, outpath, cafile, fix_timestamps):
 
     
     with open(outpath, "w") as f:
-	f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkeys[0]))
+        f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkeys[0]))
         for i in range(len(incerts)):
             f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, incerts[i]))
 
@@ -99,18 +99,18 @@ def print_cert(inpath):
     output = ""
 
     with open(inpath) as f:
-	buf = f.read()
+        buf = f.read()
         pattern = "-----BEGIN CERTIFICATE-----"
         index  = 0
         i = 0
-	while True:
+        while True:
             index = buf.find(pattern, index)
-	    if (index==-1):
+            if (index==-1):
                 break
-    	    p = subprocess.Popen(["openssl", "x509", "-text"], \
-                                stdout=subprocess.PIPE, stdin=subprocess.PIPE,\
-                                stderr=subprocess.STDOUT)
-    	    output += p.communicate(input=buf[index:])[0]
+            p = subprocess.Popen(["openssl", "x509", "-text"], \
+                            stdout=subprocess.PIPE, stdin=subprocess.PIPE,\
+                            stderr=subprocess.STDOUT)
+            output += p.communicate(input=buf[index:])[0]
             index = index + len(pattern)
             i += 1
     print output.find("Certificate:")

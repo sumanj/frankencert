@@ -8,17 +8,17 @@ def print_cert(inpath):
     i = 0
 
     with open(inpath) as f:
-	buf = f.read()
+        buf = f.read()
         pattern = "-----BEGIN CERTIFICATE-----"
         index  = 0
-	while True:
+        while True:
             index = buf.find(pattern, index)
-	    if (index==-1):
+            if (index==-1):
                 break
-    	    p = subprocess.Popen(["openssl", "x509", "-text"], \
-                                stdout=subprocess.PIPE, stdin=subprocess.PIPE,\
-                                stderr=subprocess.STDOUT)
-    	    output += p.communicate(input=buf[index:])[0]
+            p = subprocess.Popen(["openssl", "x509", "-text"], \
+                            stdout=subprocess.PIPE, stdin=subprocess.PIPE,\
+                            stderr=subprocess.STDOUT)
+            output += p.communicate(input=buf[index:])[0]
             index = index + len(pattern)
             i += 1
     print output 

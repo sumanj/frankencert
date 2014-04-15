@@ -23,9 +23,9 @@ def get_extensions(cert):
                 for i in range(0, cert.get_extension_count())]
 
 def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
-		  extensions, flip_probability=0.25, \
-		  ext_mod_probability=0.0, invalid_ts_probability = 0.0, \
-		  hash_for_sign="sha1"):
+                  extensions, flip_probability=0.25, \
+                  ext_mod_probability=0.0, invalid_ts_probability = 0.0, \
+                  hash_for_sign="sha1", randomize_serial=False):
     cert = crypto.X509()
    
 
@@ -34,8 +34,11 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     cert.set_notAfter(pick.get_notAfter())
     pick = random.choice(certificates)
     cert.set_notBefore(pick.get_notBefore())
-    pick = random.choice(certificates)
-    cert.set_serial_number(pick.get_serial_number())
+    if randomize_serial:
+        cert.set_serial_number(random.randint(2**128,2**159))
+    else:
+        pick = random.choice(certificates)
+        cert.set_serial_number(pick.get_serial_number())
     pick = random.choice(certificates)
     cert.set_subject(pick.get_subject())
     if not issuer is None:
@@ -45,15 +48,15 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
 
     # overwrite the timestamps if asked by the user
     if random.random() < invalid_ts_probability:
-	if random.random() < 0.5:
-	    notvalidyet = b(datetime.now() + timedelta(days=1).\
-				strftime("%Y%m%d%H%M%SZ"))
-    	    cert.set_notBefore(notvalidyet)
-	else:
-	    expired = b(datetime.now() - timedelta(days=1).\
-				strftime("%Y%m%d%H%M%SZ"))
-    	    cert.set_notBefore(expired)
-		
+        if random.random() < 0.5:
+            notvalidyet = b(datetime.now() + timedelta(days=1).\
+                                strftime("%Y%m%d%H%M%SZ"))
+            cert.set_notBefore(notvalidyet)
+        else:
+            expired = b(datetime.now() - timedelta(days=1).\
+                                strftime("%Y%m%d%H%M%SZ"))
+            cert.set_notBefore(expired)
+                
         
     # handle the extensions
     # Currently we chose [0,max] extension types
@@ -68,8 +71,8 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
             extension.set_critical(1 - extension.get_critical())
         if random.random() < ext_mod_probability:
             randstr = "".join( chr(random.randint(0, 255)) for i in range(7))
-	    extension.set_data(randstr)
-	
+            extension.set_data(randstr)
+        
     cert.add_extensions(new_extensions)
     if not issuer is None:
         cert.sign(signing_key, hash_for_sign)
@@ -78,7 +81,7 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     return pkey, cert
 
 def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
-	     extensions = None):
+             extensions = None):
 
     certs = []
 
@@ -99,7 +102,7 @@ def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
     for i in range(max_depth):
         pkey = crypto.PKey()
         pkey.generate_key(crypto.TYPE_RSA, public_key_len)
-	pkeys.append(pkey)	
+        pkeys.append(pkey)        
 
     progressbar_size = 10
     if (count>progressbar_size):
@@ -107,9 +110,9 @@ def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
     else:
         step = 1 
     for i in range(count):
-	if (i%step==0):
-    	    sys.stdout.write(".")     
-    	    sys.stdout.flush()     
+        if (i%step==0):
+                sys.stdout.write(".")     
+                sys.stdout.flush()     
             
         chain = []
         signing_key = ca_key
@@ -120,9 +123,9 @@ def generate(certificates, ca_cert, ca_key, fconfig, count=1, \
             issuer = None
         for j in range(length):
             key, cert = generate_cert(certificates, pkeys[j], signing_key, issuer, \
-			 max_extensions, extensions, fconfig["flip_critical_prob"], \
-		  	fconfig["ext_mod_prob"], fconfig["invalid_ts_prob"], \
-		        fconfig["hash_for_sign"])
+                         max_extensions, extensions, fconfig["flip_critical_prob"], \
+                          fconfig["ext_mod_prob"], fconfig["invalid_ts_prob"], \
+                        fconfig["hash_for_sign"], fconfig["randomize_serial"])
             signing_key = key
             issuer = cert.get_subject()
             chain.append(cert)
