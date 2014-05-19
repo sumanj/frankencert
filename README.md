@@ -89,6 +89,20 @@ certificate validation code.
   the `utils/test_ssl_server.py` script to set up an SSL server that can present 
   the generated frankencerts as part of the SSL handshake. 
 
+- If you want to perform differential testing (i.e. compare your SSL/TLS client's 
+  behavior with other libraries' behaviors for a given franekencert), you can do 
+  so by running SSL clients using those libraries and connecting to a server serving 
+  the frankencert. The following example shows how to do this for OpenSSL.
+    - Start a SSL server serving the target frankencert using: `./test_ssl_server.py frankencert_name port_no`,
+      where `frankencert_name` is the path of the target frankencert and `port_no` is the port the server
+      will listen to.
+    - Use the command `openssl s_client -CAfile ca_cert -connect host_name:port_no`  to connect to 
+      the server and check the certificate verification result printed on the console. The `ca_cert` argument 
+      should be the CA certificate you used to generate the frankencert, `port_no` should be the same one that 
+      you used for running `test_ssl_server`, and `host_name` should be either localhost or the name of 
+      the host running the `test_ssl_server` script. 
+  
+  NOTE: We plan to make the automated scripts that we used for differential testing available soon. 
 
 ### Project structure
  - The `frankengen` directory contains the frankencert generator code
