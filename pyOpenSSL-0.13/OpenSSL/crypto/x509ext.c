@@ -21,7 +21,7 @@ static PyObject *
 crypto_X509Extension_set_critical(crypto_X509ExtensionObj *self, PyObject *args)
 {
     int critical;
-    if (!PyArg_ParseTuple(args, "i:get_critical", &critical))
+    if (!PyArg_ParseTuple(args, "i:set_critical", &critical))
         return NULL;
 
     X509_EXTENSION_set_critical(self->x509_extension, critical);

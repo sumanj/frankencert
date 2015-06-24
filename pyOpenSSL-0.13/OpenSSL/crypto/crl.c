@@ -3,7 +3,7 @@
 #include "crypto.h"
 
 
-static X509_REVOKED * X509_REVOKED_dup(X509_REVOKED *orig) {
+static X509_REVOKED * X509_REVOKED_dupe(X509_REVOKED *orig) {
     X509_REVOKED *dupe = NULL;
 
     dupe = X509_REVOKED_new();
@@ -60,7 +60,7 @@ crypto_CRL_get_revoked(crypto_CRLObj *self, PyObject *args) {
 
     for (j = 0; j < num_rev; j++) {
         r = sk_X509_REVOKED_value(self->crl->crl->revoked, j);
-        r = X509_REVOKED_dup(r);
+        r = X509_REVOKED_dupe(r);
         if (r == NULL ) {
             goto error;
         }
@@ -99,7 +99,7 @@ crypto_CRL_add_revoked(crypto_CRLObj *self, PyObject *args, PyObject *keywds) {
         return NULL;
     }
 
-    dup = X509_REVOKED_dup( rev_obj->revoked );
+    dup = X509_REVOKED_dupe( rev_obj->revoked );
     if (dup == NULL) {
         return NULL;
     }
