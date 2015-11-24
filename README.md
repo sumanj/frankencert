@@ -93,7 +93,8 @@ certificate validation code.
 
 - If you want to perform differential testing (i.e. compare your SSL/TLS client's 
   behavior with other libraries' behaviors for a given franekencert), you can do 
-  so by running SSL clients using those libraries and connecting to a server serving 
+  so by running SSL clients using those libraries (some samples are available in 
+  `differential_testing_sample_clients.tar.gz`) and connecting to a server serving 
   the frankencert. The following example shows how to do this for OpenSSL.
     - Start a SSL server serving the target frankencert using: `./test_ssl_server.py frankencert_name port_no`,
       where `frankencert_name` is the path of the target frankencert and `port_no` is the port the server
@@ -104,8 +105,6 @@ certificate validation code.
       you used for running `test_ssl_server`, and `host_name` should be either localhost or the name of 
       the host running the `test_ssl_server` script. 
   
-  NOTE: We plan to make the automated scripts that we used for differential testing available soon. 
-
 ### Project structure
  - The `frankengen` directory contains the frankencert generator code
  - Our patched version of pyOpenSSL is inside `pyOpenSSL-0.13` directory
@@ -122,4 +121,8 @@ certificate validation code.
       frankencert generation. 
     - `sample_franken.conf`: A sample config file that can be used to tune 
       different parameters of the frankencert generation process. 
+    - `differential_testing_sample_clients.tar.gz`: C code for SSL/TLS clients using
+      different SSL libraries that connect to a SSL server. The error codes (if any) 
+      are printed on the console. These clients can be used to perform differential 
+      testing.
 
