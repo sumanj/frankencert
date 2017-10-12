@@ -1,7 +1,8 @@
 Frankencert - Adversarial Testing of Certificate Validation in SSL/TLS Implementations
 =======================================================================================
 
-###What are frankencerts?
+### What are frankencerts?
+
 Frankencerts are specially crafted SSL certificates for testing certificate 
 validation code in SSL/TLS implementations. The technique is described in 
 detail in the 2014 IEEE Symposium on Security and Privacy (Oakland) paper -
@@ -10,7 +11,8 @@ in SSL/TLS Implementations* by Chad Brubaker, Suman Jana, Baishakhi Ray,
 Sarfraz Khurshid, and Vitaly Shmatikov. 
 
 
-###Why is frankencert generator useful?
+### Why is frankencert generator useful?
+
 Frankencert generator is essentially a smart fuzzer for testing SSL/TLS 
 certificate validation code. If you are a developer who is implementing 
 any sort of SSL/TLS certificate validation code (either as part of an SSL/TLS 
@@ -26,14 +28,16 @@ Linux, and Safari report that the certificate has expired but not that
 the issuer is invalid.
 
 
-###How do frankencerts work?
+### How do frankencerts work?
+
 The basic idea of frankencerts is to take a bunch of certificates as seeds 
 and use random mutations on different fields and extensions to create new 
 test certificates (frankencerts). Using frankencerts as server-side inputs 
 into an SSL/TLS handshake can help systematically test correctness of the 
 certificate validation code.
 
-###Installation and Usage
+### Installation and Usage
+
 - Install OpenSSL libraries and utilities if you don't have them already.
  On Ubuntu this can be performed with `sudo apt-get install libssl-dev`.
 
