@@ -129,4 +129,7 @@ certificate validation code.
       different SSL libraries that connect to a SSL server. The error codes (if any) 
       are printed on the console. These clients can be used to perform differential 
       testing.
+    - `initialize_differential_testing.sh`: A script for pulling and building 
+      openssl-1.0.1e and gnutls-3.1.9.1, and compiling the sample openssl and gnutls 
+      clients with the specific libraries for initializing a differential testing environment.
 
