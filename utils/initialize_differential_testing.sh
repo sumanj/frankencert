@@ -4,10 +4,16 @@
 # This script compiles the openssl client with openssl-1.0.1e library statically.(located in frankencert/utils/src/opensslconnect)
 # This script also compiles the gnutls client with gnutls-3.1.9.1 dynamically.(located in frankencert/utils/src/gnutlsconnect)
 
-# Before using this script, please change locallib variable to a local folder for installing libraries.
-locallib="/home/username/local"
 
-mkdir -p locallib
+
+if [ "$#" -ne 1 ]; then
+  echo "Usage: $0 [absolute path of local libraries folder]" >&2
+  echo "For example: $0 /home/[user]/local" >&2
+  exit 1
+fi
+locallib=$1
+
+mkdir -p $locallib
 
 git clone https://github.com/sumanj/frankencert.git
 cd frankencert
@@ -33,6 +39,7 @@ gcc connect.c -o connect -l:${locallib}/usr/local/ssl/lib/libssl.a -l:${locallib
 
 cd ../../../../
 
+sleep 1
 
 #Get nettle
 
@@ -44,6 +51,7 @@ make
 make install
 cd ../
 
+sleep 1
 
 # Get gnutls-3.1.9.1.tar.xz
 
