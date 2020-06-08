@@ -65,9 +65,10 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     # TODO: Multiple extensions of the same type?
     sample = random.randint(0, max_extensions)
     choices = random.sample(extensions.keys(), sample)
-    new_extensions = [random.choice(extensions[name]) for name in choices]
+    new_extensions = [random.choice(list(extensions[name])) for name in choices]
     for extension in new_extensions:
         if random.random() < flip_probability:
+            # pyOpenSSL no long has set_critical support?
             extension.set_critical(1 - extension.get_critical())
         if random.random() < ext_mod_probability:
             randstr = "".join( chr(random.randint(0, 255)) for i in range(7))

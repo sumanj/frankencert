@@ -9,7 +9,7 @@ def dump_certs(certs, prefix, path, name_begin=0):
     for i,cert in enumerate(certs):
         key,certs = cert
         with open(os.path.join(path, "%s-%d.pem" % (prefix, name_begin+i)), \
-                   "w") as f:
+                   "wb") as f:
             f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, key))
             for cert in certs:
                 f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert))
@@ -34,7 +34,7 @@ def load_dir(path):
             try:
                 certs.append(crypto.load_certificate(crypto.FILETYPE_PEM, buf))
             except:
-                print "Skipping: "+infile
+                print("Skipping: "+infile)
     sys.stdout.write("\n")
     sys.stdout.flush()
  
@@ -63,7 +63,7 @@ def recycle_cert(inpath, outpath, cafile, fix_timestamps):
         buf = f.read()
         cakey = crypto.load_privatekey(crypto.FILETYPE_PEM, buf)
     
-    print len(incerts)
+    print(len(incerts))
    
     pkeys = [] 
     for i in range(len(incerts)):
@@ -88,7 +88,7 @@ def recycle_cert(inpath, outpath, cafile, fix_timestamps):
             incerts[i].sign(pkeys[i+1],"sha1")
 
     
-    with open(outpath, "w") as f:
+    with open(outpath, "wb") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, pkeys[0]))
         for i in range(len(incerts)):
             f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, incerts[i]))
@@ -113,5 +113,5 @@ def print_cert(inpath):
             output += p.communicate(input=buf[index:])[0]
             index = index + len(pattern)
             i += 1
-    print output.find("Certificate:")
-    print output 
+    print(output.find("Certificate:"))
+    print(output)

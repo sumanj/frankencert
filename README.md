@@ -45,7 +45,7 @@ certificate validation code.
    We have included the source for our modified version of PyOpenSSL. 
    You will need to install it in order to use the frankencert generator. 
    First, uninstall any other version of PyOpenSSL that you may have 
-   installed on your computer. Go to the `pyOpenSSL-0.13` directory and 
+   installed on your computer. Go to the `pyopenssl-19.1.0` directory and 
    build/install PyOpenSSL by issuing `sudo python setup.py install`.
 
 - Once you have the patched pyOpenSSL set up, to generate frankencerts, 
@@ -111,7 +111,7 @@ certificate validation code.
   
 ### Project structure
  - The `frankengen` directory contains the frankencert generator code
- - Our patched version of pyOpenSSL is inside `pyOpenSSL-0.13` directory
+ - Our patched version of pyOpenSSL is inside `pyopenssl-19.1.0` directory
  - Several useful tools are included in `utils`
     - `cert_print.py`: a tool for printing frankencerts. It requires OpenSSL
       to be installed and present in the path.

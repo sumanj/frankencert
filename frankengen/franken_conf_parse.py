@@ -1,8 +1,8 @@
-import ConfigParser
+import configparser
 def parse_config(configfile):
     fconfig = {}
 
-    parser = ConfigParser.SafeConfigParser(defaults={'max_extensions':'20', \
+    parser = configparser.SafeConfigParser(defaults={'max_extensions':'20', \
                                 'max_depth': '3', \
                                 'ext_mod_prob': '0.0', \
                                 'flip_critical_prob': '0.25', \
