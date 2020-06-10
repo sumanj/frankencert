@@ -6,8 +6,8 @@ import sys
 import franken_conf_parse
 
 if (len(sys.argv)<5):
-    print "Usage: "+sys.argv[0]+" "+"seed_cert_path"+" ca_cert "+\
-                " out_cert_path "+ " count " +" [config] "
+    print("Usage: "+sys.argv[0]+" "+"seed_cert_path"+" ca_cert "+\
+                " out_cert_path "+ " count " +" [config] ")
     sys.exit(-1)
 
 input_cert_path = sys.argv[1]
@@ -30,7 +30,7 @@ with open(ca_cert_path, 'rt') as ca_key_file:
                                                 ca_key_file.read()) 
 sys.stdout.write("Generating frankencerts")
 max_certs_in_mem = 200
-nc = n_outcert/max_certs_in_mem
+nc = int(n_outcert/max_certs_in_mem)
 remaining_cnt = n_outcert
 for i in range(nc+1):
     if (remaining_cnt > max_certs_in_mem):

@@ -65,7 +65,7 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     # TODO: Multiple extensions of the same type?
     sample = random.randint(0, max_extensions)
     choices = random.sample(extensions.keys(), sample)
-    new_extensions = [random.choice(extensions[name]) for name in choices]
+    new_extensions = [random.choice(list(extensions[name])) for name in choices]
     for extension in new_extensions:
         if random.random() < flip_probability:
             extension.set_critical(1 - extension.get_critical())

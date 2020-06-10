@@ -1,0 +1,14 @@
+build
+dist
+*.egg-info
+*.pyc
+*.pyo
+__pycache__
+.tox
+doc/_build/
+.coverage*
+.eggs
+examples/simple/*.cert
+examples/simple/*.pkey
+.cache
+.mypy_cache
