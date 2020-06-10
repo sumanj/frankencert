@@ -41,17 +41,20 @@ certificate validation code.
 - Install OpenSSL libraries and utilities if you don't have them already.
  On Ubuntu this can be performed with `sudo apt-get install libssl-dev`.
 
+- Install the python3-setuptools package used by PyOpenSSL with
+ `sudo apt-get install python3-setuptools`.
+
 - The frankencert generator needs a modified version of PyOpenSSL. 
    We have included the source for our modified version of PyOpenSSL. 
    You will need to install it in order to use the frankencert generator. 
    First, uninstall any other version of PyOpenSSL that you may have 
    installed on your computer. Go to the `pyopenssl-19.1.0` directory and 
-   build/install PyOpenSSL by issuing `sudo python setup.py install`.
+   build/install PyOpenSSL by issuing `sudo python3 setup.py install`.
 
 - Once you have the patched pyOpenSSL set up, to generate frankencerts, 
-   use the `franken_generate.py` script: `python franken_generate.py 
+   use the `franken_generate.py` script: `python3 franken_generate.py 
    seed_certs_dir ca_cert output_dir count [config_file]`. 
-   Example usage: `python franken_generate.py ../utils/test_certs/ ../utils/rootCA_key_cert.pem ../output/ 30`.
+   Example usage: `python3 franken_generate.py ../utils/test_certs/ ../utils/rootCA_key_cert.pem ../output/ 30`.
 
    The arguments are explained below.
 
@@ -93,7 +96,7 @@ certificate validation code.
 
 - To test your SSL/TLS client with the generated frankencerts, you should use 
   the `utils/test_ssl_server.py` script to set up an SSL server that can present 
-  the generated frankencerts as part of the SSL handshake. Example usage: `python test_ssl_server.py ../output/frankencert-0.pem 443`
+  the generated frankencerts as part of the SSL handshake. Example usage: `python3 test_ssl_server.py ../output/frankencert-0.pem 443`
 
 - If you want to perform differential testing (i.e., compare your SSL/TLS client's 
   behavior with other libraries' behaviors for a given frankencert), you can do 
