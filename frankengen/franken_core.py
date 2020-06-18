@@ -49,13 +49,13 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     # overwrite the timestamps if asked by the user
     if random.random() < invalid_ts_probability:
         if random.random() < 0.5:
-            notvalidyet = b(datetime.now() + timedelta(days=1).\
-                                strftime("%Y%m%d%H%M%SZ"))
+            notvalidyet = (datetime.now() + timedelta(days=1)).\
+                                strftime("%Y%m%d%H%M%SZ").encode()
             cert.set_notBefore(notvalidyet)
         else:
-            expired = b(datetime.now() - timedelta(days=1).\
-                                strftime("%Y%m%d%H%M%SZ"))
-            cert.set_notBefore(expired)
+            expired = (datetime.now() - timedelta(days=1)).\
+                                strftime("%Y%m%d%H%M%SZ").encode()
+            cert.set_notAfter(expired)
                 
         
     # handle the extensions

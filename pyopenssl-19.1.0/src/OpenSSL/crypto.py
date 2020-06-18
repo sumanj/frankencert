@@ -875,6 +875,17 @@ class X509Extension(object):
         extension = _lib.X509_EXTENSION_create_by_OBJ(_ffi.NULL, obj, critical, data)
         self._extension = _ffi.gc(extension, _lib.X509_EXTENSION_free)
 
+    def set_data(self, data):
+        """
+        Sets the data of the X509 extension, encoded as ASN.1.
+
+        :param data: ASN.1 data to set.
+        :type data: :py:data:`bytes`
+
+        .. versionadded:: Custom for Frankencert
+        """
+        _lib.X509_EXTENSION_set_data(self._extension, data)
+
 
 class X509Req(object):
     """
