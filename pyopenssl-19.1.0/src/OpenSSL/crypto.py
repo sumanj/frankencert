@@ -884,7 +884,12 @@ class X509Extension(object):
 
         .. versionadded:: Custom for Frankencert
         """
-        _lib.X509_EXTENSION_set_data(self._extension, data)
+        obj = _lib.X509_EXTENSION_get_object(self._extension)
+        result_buffer = _ffi.new("ASN1_STRING *")
+        _lib.ASN1_STRING_set(result_buffer, data, -1)
+        octet_result = _ffi.cast('ASN1_OCTET_STRING*', result_buffer)
+        extension = _lib.X509_EXTENSION_create_by_OBJ(_ffi.NULL, obj, self.get_critical(), octet_result)
+        self._extension = _ffi.gc(extension, _lib.X509_EXTENSION_free)
 
 
 class X509Req(object):
