@@ -1,6 +1,8 @@
 from OpenSSL import crypto
 import random
 import collections
+from datetime import datetime
+from datetime import timedelta
 import sys
 
 def get_extension_dict(certs):
@@ -49,13 +51,13 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
     # overwrite the timestamps if asked by the user
     if random.random() < invalid_ts_probability:
         if random.random() < 0.5:
-            notvalidyet = b(datetime.now() + timedelta(days=1).\
-                                strftime("%Y%m%d%H%M%SZ"))
+            notvalidyet = (datetime.now() + timedelta(days=1)).\
+                                strftime("%Y%m%d%H%M%SZ").encode()
             cert.set_notBefore(notvalidyet)
         else:
-            expired = b(datetime.now() - timedelta(days=1).\
-                                strftime("%Y%m%d%H%M%SZ"))
-            cert.set_notBefore(expired)
+            expired = (datetime.now() - timedelta(days=1)).\
+                                strftime("%Y%m%d%H%M%SZ").encode()
+            cert.set_notAfter(expired)
                 
         
     # handle the extensions
@@ -71,7 +73,7 @@ def generate_cert(certificates, pkey, signing_key, issuer, max_extensions, \
             extension.set_critical(1 - extension.get_critical())
         if random.random() < ext_mod_probability:
             randstr = "".join( chr(random.randint(0, 255)) for i in range(7))
-            extension.set_data(randstr)
+            extension.set_data(randstr.encode())
         
     cert.add_extensions(new_extensions)
     if not issuer is None:
