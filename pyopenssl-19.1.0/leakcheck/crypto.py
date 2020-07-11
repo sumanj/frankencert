@@ -1,3 +1,4 @@
+from __future__ import print_function
 # Copyright (C) Jean-Paul Calderone
 # See LICENSE for details.
 
@@ -25,7 +26,7 @@ class Checker_X509_get_pubkey(BaseChecker):
         """
         Call the method repeatedly such that it will raise an exception.
         """
-        for i in xrange(self.iterations):
+        for i in range(self.iterations):
             cert = X509()
             try:
                 cert.get_pubkey()
@@ -37,8 +38,8 @@ class Checker_X509_get_pubkey(BaseChecker):
         """
         Call the method repeatedly such that it will return a PKey object.
         """
-        small = xrange(3)
-        for i in xrange(self.iterations):
+        small = range(3)
+        for i in range(self.iterations):
             key = PKey()
             key.generate_key(TYPE_DSA, 256)
             for i in small:
@@ -71,7 +72,7 @@ FCB5K3c2kkTv2KjcCAimjxkE+SBKfHg35W0wB0AWkXpVFO5W/TbHg4tqtkpt/KMn
         """
         Call the function with an encrypted PEM and a passphrase callback.
         """
-        for i in xrange(self.iterations * 10):
+        for i in range(self.iterations * 10):
             load_privatekey(
                 FILETYPE_PEM, self.ENCRYPTED_PEM, lambda *args: "hello, secret")
 
@@ -81,7 +82,7 @@ FCB5K3c2kkTv2KjcCAimjxkE+SBKfHg35W0wB0AWkXpVFO5W/TbHg4tqtkpt/KMn
         Call the function with an encrypted PEM and a passphrase callback which
         returns the wrong passphrase.
         """
-        for i in xrange(self.iterations * 10):
+        for i in range(self.iterations * 10):
             try:
                 load_privatekey(
                     FILETYPE_PEM, self.ENCRYPTED_PEM,
@@ -95,7 +96,7 @@ FCB5K3c2kkTv2KjcCAimjxkE+SBKfHg35W0wB0AWkXpVFO5W/TbHg4tqtkpt/KMn
         Call the function with an encrypted PEM and a passphrase callback which
         returns a non-string.
         """
-        for i in xrange(self.iterations * 10):
+        for i in range(self.iterations * 10):
             try:
                 load_privatekey(
                     FILETYPE_PEM, self.ENCRYPTED_PEM,
@@ -113,7 +114,7 @@ class Checker_CRL(BaseChecker):
         """
         Call the add_revoked method repeatedly on an empty CRL.
         """
-        for i in xrange(self.iterations * 200):
+        for i in range(self.iterations * 200):
             CRL().add_revoked(Revoked())
 
 
@@ -123,9 +124,9 @@ class Checker_CRL(BaseChecker):
         get_revoked method repeatedly.
         """
         crl = CRL()
-        for i in xrange(100):
+        for i in range(100):
             crl.add_revoked(Revoked())
-        for i in xrange(self.iterations):
+        for i in range(self.iterations):
             crl.get_revoked()
 
 
@@ -139,7 +140,7 @@ class Checker_X509_REVOKED_dup(BaseChecker):
         Copy an empty Revoked object repeatedly. The copy is not garbage
         collected, therefore it needs to be manually freed.
         """
-        for i in xrange(self.iterations * 100):
+        for i in range(self.iterations * 100):
             revoked_copy = _X509_REVOKED_dup(Revoked()._revoked)
             _lib.X509_REVOKED_free(revoked_copy)
 
@@ -157,12 +158,12 @@ class Checker_EllipticCurve(BaseChecker):
         curves = get_elliptic_curves()
         if curves:
             curve = next(iter(curves))
-            for i in xrange(self.iterations * 1000):
+            for i in range(self.iterations * 1000):
                 curve._to_EC_KEY()
 
 
 def vmsize():
-    return [x for x in file('/proc/self/status').readlines() if 'VmSize' in x]
+    return [x for x in open('/proc/self/status').readlines() if 'VmSize' in x]
 
 
 def main(iterations='1000'):
@@ -170,13 +171,13 @@ def main(iterations='1000'):
     for klass in globals():
         if klass.startswith('Checker_'):
             klass = globals()[klass]
-            print klass
+            print(klass)
             checker = klass(iterations)
             for meth in dir(checker):
                 if meth.startswith('check_'):
-                    print '\t', meth, vmsize(), '...',
+                    print('\t', meth, vmsize(), '...', end=' ')
                     getattr(checker, meth)()
-                    print vmsize()
+                    print(vmsize())
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 import subprocess
 import sys
 #Print all certs in a file, openssl x509 only prints the first one 
@@ -21,10 +22,10 @@ def print_cert(inpath):
             output += p.communicate(input=buf[index:])[0]
             index = index + len(pattern)
             i += 1
-    print output 
+    print(output) 
 
 if (len(sys.argv)<2):
-    print "Usage: "+sys.argv[0]+" "+"cert_file"
+    print("Usage: "+sys.argv[0]+" "+"cert_file")
 
-print "Printing all certs from "+sys.argv[1]+":"
+print("Printing all certs from "+sys.argv[1]+":")
 print_cert(sys.argv[1])
