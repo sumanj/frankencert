@@ -1,4 +1,3 @@
-from __future__ import print_function
 # Copyright (C) Jean-Paul Calderone
 # See LICENSE for details.
 #
@@ -59,7 +58,7 @@ def go():
 
     called = []
     def info(conn, where, ret):
-        print(count.next())
+        print count.next()
         called.append(None)
     context = Context(TLSv1_METHOD)
     context.set_info_callback(info)
@@ -91,7 +90,7 @@ def go():
                     pass
 
 
-threads = [Thread(target=go, args=()) for i in range(2)]
+threads = [Thread(target=go, args=()) for i in xrange(2)]
 for th in threads:
     th.start()
 for th in threads:
